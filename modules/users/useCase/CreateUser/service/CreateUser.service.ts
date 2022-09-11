@@ -1,9 +1,11 @@
-
+import { CreateUserDTO } from "../../../dtos/CreateUser.dto.ts";
+import { User } from "../../../model/User.ts";
+import { UsersRepository } from "../../../repositories/Users.repository.ts";
 
 export class CreateUserService {
     constructor(private usersRepository: UsersRepository) {}
 
-    async execute({ name, email, password }: IUserRequest) {
+    async execute({ name, email, password }: CreateUserDTO) {
         const userAlreadyExists = await this.usersRepository.findByEmail(email);
 
         if (userAlreadyExists) {
@@ -12,8 +14,10 @@ export class CreateUserService {
 
         const user = new User(name, email, password);
 
-        await this.usersRepository.save(user);
-
-        return user;
+        try{
+            await this.usersRepository.save(user);
+        }catch{
+            throw new Error('Error saving user');
+        }
     }
 }
