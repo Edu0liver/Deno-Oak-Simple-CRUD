@@ -1,6 +1,7 @@
+import { IUsersRepository } from "../interfaces/IUsers.repository.ts";
 import { User } from "../model/User.ts";
 
-export class UsersRepository {
+export class UsersRepository implements IUsersRepository {
 
     private users: User[] = [];
 
@@ -14,6 +15,10 @@ export class UsersRepository {
 
     async listAllUsers(): Promise<User[]> {
         return await this.users;
+    }
+
+    async findById(id: string): Promise<User | undefined> {
+        return await this.users.find(user => user.id === id);
     }
 
 }

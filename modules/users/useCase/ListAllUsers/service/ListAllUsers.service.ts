@@ -5,6 +5,10 @@ export class ListAllUsersService {
     constructor(private usersRepository: UsersRepository) {}
 
     async execute(): Promise<User[]> {
-        return await this.usersRepository.listAllUsers();
+        try{
+            return await this.usersRepository.listAllUsers();
+        }catch{
+            return [];
+        }
     }
 }
